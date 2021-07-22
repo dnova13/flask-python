@@ -30,11 +30,11 @@ def report():
     
     if word :
         word = word.lower() ## 소문자로 변환
-        fromDB = db.get(word)
+        existingJob = db.get(word)
         
-        # fromDB 값이 존재하면 패스
-        if fromDB :
-            jobs = fromDB
+        # existingJob 값이 존재하면 패스
+        if existingJob :
+            jobs = existingJob
         else : # none 일 경우 db 리스트에 저장
             jobs = get_jobs(word)
             # print(jobs)
@@ -47,7 +47,8 @@ def report():
     return render_template("report.html",
     searchingBy=word, 
     data=data,
-    resultNumber=len(jobs)
+    resultNumber=len(jobs),
+    jobs=jobs
     )
 
 
