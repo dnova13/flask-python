@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 # 서버 구축
 app = Flask("SuperScrapper")
@@ -14,8 +14,19 @@ def home():
 
 # <username> /:username  username = 1 에 따라 동적으로 웹 제어 가능.
 @app.route("/<username>")
-def conn(username):
+def user(username):
     return f"your name is {username}"
+
+
+### 검색 기능 query argument
+@app.route("/report")
+def report():
+    word = request.args.get("word") # word 쿼리의 값 받아옴.
+    data = 111
+
+    # return f"you are looking for a job in \"{word}\""
+    return render_template("report.html",searchingBy=word, data=data)
+
 
 
 # 로컬일 경우 안먹힐 수 도 있음 "0.0.0.0"
