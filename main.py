@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request,redirect
+from scarpper import get_jobs
 
 # 서버 구축
 app = Flask("SuperScrapper")
@@ -23,6 +24,13 @@ def user(username):
 def report():
     word = request.args.get("word") # word 쿼리의 값 받아옴.
     data = 111
+    
+    if word :
+        word = word.lower() ## 소문자로 변환
+        jobs = get_jobs(word)
+        print(jobs)
+    else :
+        return redirect("/") ## 홈으로 리다이렉트
 
     # return f"you are looking for a job in \"{word}\""
     return render_template("report.html",searchingBy=word, data=data)
