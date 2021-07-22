@@ -4,6 +4,9 @@ from scarpper import get_jobs
 # 서버 구축
 app = Flask("SuperScrapper")
 
+## fake db 생성
+db = {}
+
 
 # @ : decorate 이고 이거 덕에 / 등으로 로 접속하는 라우트 만듬
 @app.route("/")
@@ -27,13 +30,25 @@ def report():
     
     if word :
         word = word.lower() ## 소문자로 변환
-        jobs = get_jobs(word)
-        print(jobs)
+        fromDB = db.get(word)
+        
+        # fromDB 값이 존재하면 패스
+        if fromDB :
+            jobs = fromDB
+        else : # none 일 경우 db 리스트에 저장
+            jobs = get_jobs(word)
+            # print(jobs)
+            db[word] = jobs
+        
     else :
         return redirect("/") ## 홈으로 리다이렉트
 
     # return f"you are looking for a job in \"{word}\""
-    return render_template("report.html",searchingBy=word, data=data)
+    return render_template("report.html",
+    searchingBy=word, 
+    data=data,
+    resultNumber=len(jobs)
+    )
 
 
 
