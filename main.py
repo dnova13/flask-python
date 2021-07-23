@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, send_file
 from scarpper import get_jobs
 import json
+from exporter import save_to_file
 
 # 서버 구축
 app = Flask("SuperScrapper")
@@ -69,7 +70,9 @@ def export():
 
         if not jobs :
             raise Exception()
-        return f"Generate CSV for {word}"
+
+        save_to_file(jobs, word)
+        return send_file(f"research_{word}_jobs.csv")
 
     except:
         return redirect("/")
